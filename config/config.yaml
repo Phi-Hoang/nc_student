@@ -1,0 +1,8 @@
+MongoDB:
+  Uri: "mongodb+srv://phihdn:<password>@cluster0-5kahe.gcp.mongodb.net/test?retryWrites=true&w=majority"
+  HostName: "localhost"
+  Username: "user1"
+  Password: "mypass"
+
+JWTSecret:
+  JWTEncodeKey: mysecret12345
