@@ -6,21 +6,24 @@ import (
 	"log"
 	"time"
 
-	"github.com/Phi-Hoang/nc_student/config"
+	"github.com/phihdn/nc_student/config"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+// Client common DB Client
 var Client *mongo.Client
 
+// Test to test DB by insterting Pi number into test db
 func Test() {
+	insertNunber()
 	fmt.Println("connect & insert db")
 }
 func init() {
 	connect()
-	insertNunber()
+	//insertNunber()
 }
 
 func connect() {

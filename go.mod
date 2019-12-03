@@ -1,4 +1,4 @@
-module github.com/Phi-Hoang/nc_student
+module github.com/phihdn/nc_student
 
 go 1.13
 

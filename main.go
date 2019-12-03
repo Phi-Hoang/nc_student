@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Phi-Hoang/nc_student/config"
-	"github.com/Phi-Hoang/nc_student/route"
+	"github.com/phihdn/nc_student/config"
+	"github.com/phihdn/nc_student/route"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
