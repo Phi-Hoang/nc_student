@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/Phi-Hoang/nc_student/handler"
+	"github.com/phihdn/nc_student/handler"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,4 +23,6 @@ func Public(e *echo.Echo) {
 	g := e.Group("/student/v1/public")
 	g.GET("/health", handler.HealthCheck)
 	g.GET("/test", handler.TestDB)
+	g.GET("/student", handler.GetAllStudents)
+	g.POST("/student", handler.AddStudent)
 }
