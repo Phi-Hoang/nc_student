@@ -16,6 +16,13 @@ import (
 // Client common DB Client
 var Client *mongo.Client
 
+const (
+	//DbName is Database Name
+	DbName = "go-learning"
+	//ColName is Collection Name
+	ColName = "students"
+)
+
 // Test to test DB by insterting Pi number into test db
 func Test() {
 	insertNunber()
@@ -28,16 +35,21 @@ func init() {
 
 func connect() {
 	fmt.Println(config.Config.Mongo.URI)
-	client, err := mongo.NewClient(options.Client().ApplyURI(config.Config.Mongo.URI))
-	if err != nil {
-		log.Fatalf("create client error: %v", err)
-	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
+
+	clientOptions := options.Client().ApplyURI(config.Config.Mongo.URI)
+	clientOptions.SetMaxPoolSize(100)
+	clientOptions.SetMinPoolSize(4)
+	clientOptions.SetReadPreference(readpref.Nearest())
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatalf("connect error: %v", err)
 	}
-	ctx, _ = context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel = context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
 		fmt.Printf("ping error: %v\n", err)
@@ -48,7 +60,8 @@ func connect() {
 
 func insertNunber() {
 	collection := Client.Database("testing").Collection("numbers")
-	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
 	res, err := collection.InsertOne(ctx, bson.M{"name": "pi", "value": 3.14159})
 	if err != nil {
 		log.Fatalf("test inserting number error: %v", err)
