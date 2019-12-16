@@ -1,8 +1,8 @@
 package route
 
 import (
-	"github.com/phihdn/nc_student/handler"
 	"github.com/labstack/echo/v4"
+	"github.com/phihdn/nc_student/handler"
 )
 
 func All(e *echo.Echo) {
@@ -16,7 +16,9 @@ func Private(e *echo.Echo) {
 }
 
 func Staff(e *echo.Echo) {
-
+	g := e.Group("/api/student/v1/staff")
+	g.POST("/student", handler.AddStudent)
+	g.PUT("/student", handler.UpdateStudent)
 }
 
 func Public(e *echo.Echo) {
@@ -24,5 +26,4 @@ func Public(e *echo.Echo) {
 	g.GET("/health", handler.HealthCheck)
 	g.GET("/test", handler.TestDB)
 	g.GET("/student", handler.GetAllStudents)
-	g.POST("/student", handler.AddStudent)
 }
