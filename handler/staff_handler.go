@@ -10,12 +10,14 @@ import (
 
 // AddStudent receives a student and insert into db
 func AddStudent(c echo.Context) error {
-	var student db.Student
+	var student db.StudentAddRequest
 	if err := c.Bind(&student); err != nil {
+		log.Printf("req error :%v", err)
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 	res, err := db.AddStudent(&student)
 	if err != nil {
+		log.Printf("add error :%v", err)
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 

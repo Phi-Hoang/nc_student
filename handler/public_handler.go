@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -33,6 +34,7 @@ func GetAllStudents(c echo.Context) error {
 
 	students, err := db.GetAllStudent()
 	if err != nil {
+		log.Printf("get All student error :%v", err)
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
@@ -48,6 +50,17 @@ func SearchStudentSimple(c echo.Context) error {
 
 	students, err := db.SearchStudentSimple(req)
 	if err != nil {
+		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+	}
+
+	return c.JSON(http.StatusOK, students)
+}
+
+// GetAllStudentGroupByLastName returns all students and group by last name
+func GetAllStudentGroupByLastName(c echo.Context) error {
+	students, err := db.GetAllStudentGroupByLastName()
+	if err != nil {
+		log.Printf("group last name student error :%v", err)
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 

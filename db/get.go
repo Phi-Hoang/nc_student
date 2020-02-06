@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"time"
 
@@ -53,6 +54,37 @@ func SearchStudentSimple(req StudentSearchRequest) (*[]Student, error) {
 
 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	var students []Student
+	err = cur.All(ctx, &students)
+	if err != nil {
+		log.Printf("cur all error: %v", err)
+		return nil, err
+	}
+
+	return &students, nil
+}
+
+// GetAllStudentGroupByLastName return all students in DB and group by last name
+func GetAllStudentGroupByLastName() (*[]bson.M, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	groupStage := bson.D{
+		{"$group", bson.D{
+			{"_id", "$last_name"},
+			{"students", bson.D{
+				{"$push", "$$ROOT"},
+			}},
+		}},
+	}
+	cur, err := Client.Database(DbName).Collection(ColName).Aggregate(ctx, mongo.Pipeline{groupStage})
+	if err != nil {
+		log.Printf("Find error: %v", err)
+		return nil, err
+	}
+
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var students []bson.M
 	err = cur.All(ctx, &students)
 	if err != nil {
 		log.Printf("cur all error: %v", err)
