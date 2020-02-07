@@ -45,3 +45,13 @@ func UpdateStudent(student *StudentUpdateRequest) (interface{}, error) {
 	res, err := collection.UpdateOne(ctx, filter, update)
 	return res, err
 }
+
+func DeleteStudent(student *StudentDeleteRequest) (interface{}, error) {
+	collection := Client.Database(DbName).Collection(ColName)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	filter := bson.M{"email": student.Email}
+	update := bson.M{"$set": student}
+	res, err := collection.UpdateOne(ctx, filter, update)
+	return res, err
+}
