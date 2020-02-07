@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/phihdn/nc_student/db"
@@ -37,4 +38,29 @@ func UpdateStudent(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+func DeleteStudent(c echo.Context) error {
+	var student db.StudentDeleteRequest
+	if err := c.Bind(&student); err != nil {
+		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+	}
+	res, err := db.DeleteStudent(&student)
+	if err != nil {
+		log.Printf("delete error :%v", err)
+		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
+
+func DeleteStudentById(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	student, err := db.DeleteStudentById(id)
+	if err != nil {
+		log.Printf("student by id error :%v", err)
+		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+	}
+	return c.JSON(http.StatusOK, student)
 }

@@ -35,7 +35,7 @@ func GetAllStudent() (*[]Student, error) {
 	return &students, nil
 }
 
-func SearchStudentSimple(req StudentSearchRequest) (*[]Student, error) {
+func SearchStudentSimple(req *StudentSearchRequest) (*[]Student, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	var filter bson.M
 	bs, err := json.Marshal(req)

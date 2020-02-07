@@ -49,7 +49,7 @@ func SearchStudentSimple(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
-	students, err := db.SearchStudentSimple(req)
+	students, err := db.SearchStudentSimple(&req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
