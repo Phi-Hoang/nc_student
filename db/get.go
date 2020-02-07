@@ -44,7 +44,7 @@ func SearchStudentSimple(req StudentSearchRequest) (*[]Student, error) {
 		log.Printf("marshal error: %v", err)
 	}
 
-	fmt.Println(filter)
+	fmt.Println("Filter", filter)
 
 	cur, err := Client.Database(DbName).Collection(ColName).Find(ctx, filter)
 	if err != nil {

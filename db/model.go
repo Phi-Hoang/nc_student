@@ -14,7 +14,7 @@ type Error struct {
 
 // Student contains information for a student
 type Student struct {
-	ID        int    `json:"id" bson:"_id"`
+	ID        int    `json:"id" bson:"id"`
 	FirstName string `json:"first_name" bson:"first_name"`
 	LastName  string `json:"last_name" bson:"last_name"`
 	ClassName string `json:"class_name" bson:"class_name"`
