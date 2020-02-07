@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/phihdn/nc_student/models"
-	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"time"
+
+	"github.com/phihdn/nc_student/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -26,6 +28,50 @@ func GetAllStudent() (*[]models.Student, error) {
 	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	var students []models.Student
+	err = cur.All(ctx, &students)
+	if err != nil {
+		log.Printf("cur all error: %v", err)
+		return nil, err
+	}
+
+	return &students, nil
+}
+
+func SearchStudent(req *models.StudentSearchRequest) (*[]models.Student, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	var filter = bson.M{}
+	if req.ID > 0 {
+		filter["id"] = req.ID
+	}
+	if req.FirstName != "" {
+		filter["first_name"] = primitive.Regex{Pattern: req.FirstName, Options: "i"}
+	}
+	if req.LastName != "" {
+		filter["last_name"] = primitive.Regex{Pattern: req.LastName, Options: "i"}
+	}
+	if req.Name != "" {
+		filter["$or"] = []bson.M{
+			bson.M{"first_name": primitive.Regex{Pattern: req.Name, Options: "i"}},
+			bson.M{"last_name": primitive.Regex{Pattern: req.Name, Options: "i"}},
+		}
+	}
+	if req.ClassName != "" {
+		filter["class_name"] = primitive.Regex{Pattern: req.ClassName, Options: "i"}
+	}
+	if req.Email != "" {
+		filter["email"] = primitive.Regex{Pattern: req.Email, Options: "i"}
+	}
+
+	fmt.Println("Filter", filter)
+
+	cur, err := Client.Database(DbName).Collection(ColName).Find(ctx, filter)
+	if err != nil {
+		log.Printf("Find error: %v", err)
+		return nil, err
+	}
+
+	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	var students []models.Student
 	err = cur.All(ctx, &students)
 	if err != nil {

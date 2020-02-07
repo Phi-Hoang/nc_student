@@ -34,4 +34,5 @@ func Public(e *echo.Echo) {
 	g.GET("/student/id/:id", handler.GetStudentById)
 	g.GET("/student/group/last_name", handler.GetAllStudentGroupByLastName)
 	g.PATCH("/student/simple", handler.SearchStudentSimple)
+	g.PATCH("/student", handler.SearchStudent)
 }

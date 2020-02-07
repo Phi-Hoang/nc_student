@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/phihdn/nc_student/models"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/phihdn/nc_student/models"
 
 	"github.com/labstack/echo/v4"
 	"github.com/phihdn/nc_student/db"

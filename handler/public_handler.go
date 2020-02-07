@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/phihdn/nc_student/models"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/phihdn/nc_student/models"
 
 	"github.com/labstack/echo/v4"
 	"github.com/phihdn/nc_student/db"
@@ -43,8 +44,21 @@ func GetAllStudents(c echo.Context) error {
 	return c.JSON(http.StatusOK, students)
 }
 
-func SearchStudentSimple(c echo.Context) error {
+func SearchStudent(c echo.Context) error {
+	var req models.StudentSearchRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request1"})
+	}
 
+	students, err := db.SearchStudent(&req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request2"})
+	}
+
+	return c.JSON(http.StatusOK, students)
+}
+
+func SearchStudentSimple(c echo.Context) error {
 	var req models.StudentSearchRequest
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})

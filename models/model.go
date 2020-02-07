@@ -58,6 +58,7 @@ type StudentSearchRequest struct {
 	ClassName string `json:"class_name,omitempty"`
 	Email     string `json:"email,omitempty"`
 	Age       int    `json:"age,omitempty"`
+	Name      string `json:"name,omitempty"`
 }
 
 type UserClaims struct {
