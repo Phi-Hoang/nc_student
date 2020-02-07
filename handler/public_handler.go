@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/phihdn/nc_student/models"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,7 +37,7 @@ func GetAllStudents(c echo.Context) error {
 	students, err := db.GetAllStudent()
 	if err != nil {
 		log.Printf("get All student error :%v", err)
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	return c.JSON(http.StatusOK, students)
@@ -44,14 +45,14 @@ func GetAllStudents(c echo.Context) error {
 
 func SearchStudentSimple(c echo.Context) error {
 
-	var req db.StudentSearchRequest
+	var req models.StudentSearchRequest
 	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	students, err := db.SearchStudentSimple(&req)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	return c.JSON(http.StatusOK, students)
@@ -62,7 +63,7 @@ func GetAllStudentGroupByLastName(c echo.Context) error {
 	students, err := db.GetAllStudentGroupByLastName()
 	if err != nil {
 		log.Printf("group last name student error :%v", err)
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	return c.JSON(http.StatusOK, students)
@@ -74,7 +75,7 @@ func GetStudentById(c echo.Context) error {
 	student, err := db.GetStudentById(id)
 	if err != nil {
 		log.Printf("student by id error :%v", err)
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, models.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 	return c.JSON(http.StatusOK, student)
 }

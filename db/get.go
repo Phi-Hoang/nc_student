@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/phihdn/nc_student/models"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"time"
@@ -12,7 +13,7 @@ import (
 )
 
 // GetAllStudent return all students in DB
-func GetAllStudent() (*[]Student, error) {
+func GetAllStudent() (*[]models.Student, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	filter := bson.M{} //map[string]interface{}
@@ -25,7 +26,7 @@ func GetAllStudent() (*[]Student, error) {
 	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var students []Student
+	var students []models.Student
 	err = cur.All(ctx, &students)
 	if err != nil {
 		log.Printf("cur all error: %v", err)
@@ -35,7 +36,7 @@ func GetAllStudent() (*[]Student, error) {
 	return &students, nil
 }
 
-func SearchStudentSimple(req *StudentSearchRequest) (*[]Student, error) {
+func SearchStudentSimple(req *models.StudentSearchRequest) (*[]models.Student, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	var filter bson.M
 	bs, err := json.Marshal(req)
@@ -53,7 +54,7 @@ func SearchStudentSimple(req *StudentSearchRequest) (*[]Student, error) {
 	}
 
 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-	var students []Student
+	var students []models.Student
 	err = cur.All(ctx, &students)
 	if err != nil {
 		log.Printf("cur all error: %v", err)
@@ -94,12 +95,12 @@ func GetAllStudentGroupByLastName() (*[]bson.M, error) {
 	return &students, nil
 }
 
-func GetStudentById(id int) (*Student, error) {
+func GetStudentById(id int) (*models.Student, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	filter := bson.M{"id": id}
 
-	var student Student
+	var student models.Student
 	err := Client.Database(DbName).Collection(ColName).FindOne(ctx, filter).Decode(&student)
 	if err != nil {
 		log.Printf("Find error: %v", err)

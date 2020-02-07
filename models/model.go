@@ -1,4 +1,6 @@
-package db
+package models
+
+import "github.com/dgrijalva/jwt-go"
 
 // Sequence for mongodb
 type Sequence struct {
@@ -56,4 +58,11 @@ type StudentSearchRequest struct {
 	ClassName string `json:"class_name,omitempty"`
 	Email     string `json:"email,omitempty"`
 	Age       int    `json:"age,omitempty"`
+}
+
+type UserClaims struct {
+	UserID int    `json:"uid"`
+	Phone  string `json:"p"`
+	Email  string `json:"e"`
+	jwt.StandardClaims
 }

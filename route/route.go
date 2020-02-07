@@ -2,21 +2,24 @@ package route
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/phihdn/nc_student/config"
 	"github.com/phihdn/nc_student/handler"
+	"github.com/phihdn/nc_student/models"
 )
 
 func All(e *echo.Echo) {
-	Private(e)
 	Staff(e)
 	Public(e)
 }
 
-func Private(e *echo.Echo) {
-
-}
-
 func Staff(e *echo.Echo) {
 	g := e.Group("/api/student/v1/staff")
+	JWTConfig := middleware.JWTConfig{
+		SigningKey: []byte(config.Config.JWTSecret.JWTKey),
+		Claims:     &models.UserClaims{},
+	}
+	g.Use(middleware.JWTWithConfig(JWTConfig))
 	g.POST("/student", handler.AddStudent)
 	g.PUT("/student", handler.UpdateStudent)
 	g.DELETE("/student", handler.DeleteStudent)

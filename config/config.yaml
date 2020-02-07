@@ -5,4 +5,4 @@ MongoDB:
   Password: "mypass"
 
 JWTSecret:
-  JWTEncodeKey: mysecret12345
+  JWTEncodeKey: mysecret12345phi

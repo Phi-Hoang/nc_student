@@ -3,6 +3,7 @@ module github.com/phihdn/nc_student
 go 1.13
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/labstack/echo/v4 v4.1.11
 	github.com/pelletier/go-toml v1.6.0 // indirect
