@@ -26,6 +26,7 @@ func Public(e *echo.Echo) {
 	g.GET("/health", handler.HealthCheck)
 	g.GET("/test", handler.TestDB)
 	g.GET("/student", handler.GetAllStudents)
+	g.GET("/student/id/:id", handler.GetStudentById)
 	g.GET("/student/group/last_name", handler.GetAllStudentGroupByLastName)
 	g.PATCH("/student/simple", handler.SearchStudentSimple)
 }

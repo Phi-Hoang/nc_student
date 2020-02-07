@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/phihdn/nc_student/db"
@@ -65,4 +66,15 @@ func GetAllStudentGroupByLastName(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, students)
+}
+
+func GetStudentById(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	student, err := db.GetStudentById(id)
+	if err != nil {
+		log.Printf("student by id error :%v", err)
+		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+	}
+	return c.JSON(http.StatusOK, student)
 }
